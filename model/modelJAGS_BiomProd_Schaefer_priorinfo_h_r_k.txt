@@ -1,4 +1,4 @@
-model_JAGS <- "
+
 
 model{
 #-----------------------------------------------------------------
@@ -18,15 +18,31 @@ B[1] ~ dlnorm(log(Bm[1]),tau_p)
 for(t in 1:(n_obs-1)){
 #Equation de Schaeffer
 
-Bm[t+1] <- max(B[t]+B[t]*r*(1-B[t]/K),0.0001*K)
+Bm[t+1] <- max(B[t]+B[t]*r*(1-B[t]/K)-C[t],0.0001*K)
 
 
 B[t+1] ~ dlnorm(log(Bm[t+1]),tau_p)
 }
 
 
+#Calcul de la pression lié à la peche
+for(t in 1:(n_obs-1)){
 
+C[t] <- h[t]*B[t]
+}
 
+#Modeles d'observations
+	# intialisation des variables pour modèle d'observations
+	CV_o<-0.2
+	sigma2_o<-log((CV_o*CV_o)+1)
+	tau_o <- 1/(sigma2_o)
+
+#On utilise les captures pour informer notre  modèle
+for(i in 1:(n_obs-1)){
+
+C_obs[i] ~ dlnorm(log(C[i]),tau_o)
+
+}
 
 
 
@@ -37,7 +53,7 @@ for(t in 1:(n_obs-1) ){
 
 I[t+1] <- q* B[t]
 
-I_obs[t+1] ~ dlnorm(I[t+1] , tau_o)
+I_obs[t+1] ~ dlnorm(log(I[t+1]) , tau_o)
 }
 
 
@@ -135,4 +151,4 @@ C_e[e] <- r*B_e[e]*(1-B_e[e]/K)
 }
 
 # end model
-}"
+}

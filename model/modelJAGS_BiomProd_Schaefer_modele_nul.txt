@@ -1,16 +1,17 @@
-model_JAGS <- "
 
 model{
 #-----------------------------------------------------------------
 #Noms variables
 #B moyenne de quantité de biomasse au temps t
 #Bm quantité de biomasse au temps t
+#C nombre de capture en fonction du temps 
+
 
 #Initialisation de la biomasse
-alpha <- 1
-sigma_p ~ dunif(0,10)
+alpha <- 1 # paramètre pour le départ de la biomasse
+sigma_p ~ dunif(0,10)  # Variance lié a la premiere valeur de biomasse
 tau_p <- 1/ (sigma_p*sigma_p)
-Bm[1] <- alpha*K
+Bm[1] <- alpha*K #definition 
 
 B[1] ~ dlnorm(log(Bm[1]),tau_p)
 
@@ -18,33 +19,21 @@ B[1] ~ dlnorm(log(Bm[1]),tau_p)
 for(t in 1:(n_obs-1)){
 #Equation de Schaeffer
 
-Bm[t+1] <- max(B[t]+B[t]*r*(1-B[t]/K)-C[t],0.0001*K)
+Bm[t+1] <- max(B[t]+B[t]*r*(1-B[t]/K),0.0001*K)
 
 
 B[t+1] ~ dlnorm(log(Bm[t+1]),tau_p)
 }
 
 
-#Calcul de la pression lié à la peche
-for(t in 1:(n_obs-1)){
 
-C[t] <- h[t]*B[t]
-}
 
-#Modeles d'observations
-	# intialisation des variables pour modèle d'observations
+
+
+# intialisation des variables pour modèle d'observations
 	CV_o<-0.2
 	sigma2_o<-log((CV_o*CV_o)+1)
 	tau_o <- 1/(sigma2_o)
-
-#On utilise les captures pour informer notre  modèle
-for(i in 1:(n_obs-1)){
-
-C_obs[i] ~ dlnorm(log(C[i]),tau_o)
-
-}
-
-
 
 
 
@@ -53,7 +42,7 @@ for(t in 1:(n_obs-1) ){
 
 I[t+1] <- q* B[t]
 
-I_obs[t+1] ~ dlnorm(I[t+1] , tau_o)
+I_obs[t+1] ~ dlnorm(log(I[t+1]) , tau_o)
 }
 
 
@@ -70,10 +59,7 @@ I_obs[t+1] ~ dlnorm(I[t+1] , tau_o)
 # Prior 
 #taux d'exploitation
 
-# taux de poisson capturé
-for(t in 1:n_obs){
-h[t] ~ dbeta(1,1)
-}
+
 
 #  ?????
 q ~ dunif(0,1)
@@ -90,17 +76,17 @@ K_p ~ dunif(100,15000)
 
 # Gamma Informative priors on (r,K)
 
- #Er <- 0.45 ; CVr <- 0.3
- #ar <- 1/(CVr*CVr) 
- #br <- (1/(CVr*CVr))*(1/Er)
- #r ~ dgamma(ar,br) 
- #r_p ~ dgamma(ar,br) 
+# Er <- 0.45 ; CVr <- 0.3
+# ar <- 1/(CVr*CVr) 
+# br <- (1/(CVr*CVr))*(1/Er)
+# r ~ dgamma(ar,br) 
+# r_p ~ dgamma(ar,br) 
 
- #EK <- 5000 ; CVK <- 0.6
- #aK <- 1/(CVK*CVK) 
- #bK <- (1/(CVK*CVK))*(1/EK)
- #K ~ dgamma(aK,bK) 
- #K_p ~ dgamma(aK,bK) 
+# EK <- 5000 ; CVK <- 0.6
+# aK <- 1/(CVK*CVK) 
+# bK <- (1/(CVK*CVK))*(1/EK)
+# K ~ dgamma(aK,bK) 
+# K_p ~ dgamma(aK,bK) 
 
 
 
@@ -151,4 +137,4 @@ C_e[e] <- r*B_e[e]*(1-B_e[e]/K)
 }
 
 # end model
-}"
+}

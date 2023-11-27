@@ -1,43 +1,41 @@
-model_JAGS <- "
-
 model{
 #-----------------------------------------------------------------
-#Depart de la biomasse
+#Noms variables
+#B moyenne de quantité de biomasse au temps t
+#Bm quantité de biomasse au temps t
 
+#Initialisation de la biomasse
 alpha <- 1
 sigma_p ~ dunif(0,10)
 tau_p <- 1/ (sigma_p*sigma_p)
 Bm[1] <- alpha*K
 
-for(t in 1:n_obs){
-h[t] ~ dbeta(1,1)
-}
-
-
-
 B[1] ~ dlnorm(log(Bm[1]),tau_p)
 
-#boucle Bm et B
+#Calcul de la biomasse
 for(t in 1:(n_obs-1)){
-Bm[t+1] <- max(B[t]+B[t]*r*(1-B[t]/K)-C[t],0.0001*K)
+#Equation de Schaeffer
+
+Bm[t+1] <- max(B[t]+B[t]*r*(1-log(B[t])/log(K))-C[t],0.0001*K)
 
 
 B[t+1] ~ dlnorm(log(Bm[t+1]),tau_p)
 }
 
 
-# boucle pour pression peche
+#Calcul de la pression lié à la peche
 for(t in 1:(n_obs-1)){
 
 C[t] <- h[t]*B[t]
 }
 
-#Modele d'observation
+#Modeles d'observations
+	# intialisation des variables pour modèle d'observations
+	CV_o<-0.2
+	sigma2_o<-log((CV_o*CV_o)+1)
+	tau_o <- 1/(sigma2_o)
 
-CV_o<-0.2
-sigma2_o<-log((CV_o*CV_o)+1)
-tau_o <- 1/(sigma2_o)
-
+#On utilise les captures pour informer notre  modèle
 for(i in 1:(n_obs-1)){
 
 C_obs[i] ~ dlnorm(log(C[i]),tau_o)
@@ -46,9 +44,9 @@ C_obs[i] ~ dlnorm(log(C[i]),tau_o)
 
 
 
-q ~ dunif(0,1)
 
 
+# Deuxime source d'info indice de biodiversité
 for(t in 1:(n_obs-1) ){
 
 I[t+1] <- q* B[t]
@@ -70,11 +68,13 @@ I_obs[t+1] ~ dlnorm(log(I[t+1]) , tau_o)
 # Prior 
 #taux d'exploitation
 
+# taux de poisson capturé
+for(t in 1:n_obs){
+h[t] ~ dbeta(1,1)
+}
 
-
-
-
-
+#  ?????
+q ~ dunif(0,1)
 
 
 # ---------------------------------------------------------------
@@ -149,4 +149,4 @@ C_e[e] <- r*B_e[e]*(1-B_e[e]/K)
 }
 
 # end model
-}"
+}

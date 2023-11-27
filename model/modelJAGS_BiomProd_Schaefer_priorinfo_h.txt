@@ -1,4 +1,3 @@
-model_JAGS <- "
 
 model{
 #-----------------------------------------------------------------
@@ -53,7 +52,7 @@ for(t in 1:(n_obs-1) ){
 
 I[t+1] <- q* B[t]
 
-I_obs[t+1] ~ dlnorm(I[t+1] , tau_o)
+I_obs[t+1] ~ dlnorm(log(I[t+1] ), tau_o)
 }
 
 
@@ -82,25 +81,25 @@ q ~ dunif(0,1)
 # ---------------------------------------------------------------
 # ---------------------------------------------------------------
 
-#r ~ dunif(0.01,3)
-#r_p ~ dunif(0.01,3)
+r ~ dunif(0.01,3)
+r_p ~ dunif(0.01,3)
 
-#K ~ dunif(100,15000) 
-#K_p ~ dunif(100,15000) 
+K ~ dunif(100,15000) 
+K_p ~ dunif(100,15000) 
 
 # Gamma Informative priors on (r,K)
 
- Er <- 0.45 ; CVr <- 0.3
- ar <- 1/(CVr*CVr) 
- br <- (1/(CVr*CVr))*(1/Er)
- r ~ dgamma(ar,br) 
- r_p ~ dgamma(ar,br) 
+ #Er <- 0.45 ; CVr <- 0.3
+ #ar <- 1/(CVr*CVr) 
+ #br <- (1/(CVr*CVr))*(1/Er)
+ #r ~ dgamma(ar,br) 
+ #r_p ~ dgamma(ar,br) 
 
- EK <- 5000 ; CVK <- 0.6
- aK <- 1/(CVK*CVK) 
- bK <- (1/(CVK*CVK))*(1/EK)
- K ~ dgamma(aK,bK) 
- K_p ~ dgamma(aK,bK) 
+ #EK <- 5000 ; CVK <- 0.6
+ #aK <- 1/(CVK*CVK) 
+ #bK <- (1/(CVK*CVK))*(1/EK)
+ #K ~ dgamma(aK,bK) 
+ #K_p ~ dgamma(aK,bK) 
 
 
 
@@ -151,4 +150,4 @@ C_e[e] <- r*B_e[e]*(1-B_e[e]/K)
 }
 
 # end model
-}"
+}
