@@ -1,0 +1,154 @@
+model_JAGS <- "
+
+model{
+#-----------------------------------------------------------------
+#Noms variables
+#B moyenne de quantité de biomasse au temps t
+#Bm quantité de biomasse au temps t
+
+#Initialisation de la biomasse
+alpha <- 1
+sigma_p ~ dunif(0,10)
+tau_p <- 1/ (sigma_p*sigma_p)
+Bm[1] <- alpha*K
+
+B[1] ~ dlnorm(log(Bm[1]),tau_p)
+
+#Calcul de la biomasse
+for(t in 1:(n_obs-1)){
+#Equation de Schaeffer
+
+Bm[t+1] <- max(B[t]+B[t]*r*(1-B[t]/K)-C[t],0.0001*K)
+
+
+B[t+1] ~ dlnorm(log(Bm[t+1]),tau_p)
+}
+
+
+#Calcul de la pression lié à la peche
+for(t in 1:(n_obs-1)){
+
+C[t] <- h[t]*B[t]
+}
+
+#Modeles d'observations
+	# intialisation des variables pour modèle d'observations
+	CV_o<-0.2
+	sigma2_o<-log((CV_o*CV_o)+1)
+	tau_o <- 1/(sigma2_o)
+
+#On utilise les captures pour informer notre  modèle
+for(i in 1:(n_obs-1)){
+
+C_obs[i] ~ dlnorm(log(C[i]),tau_o)
+
+}
+
+
+
+
+
+# Deuxime source d'info indice de biodiversité
+for(t in 1:(n_obs-1) ){
+
+I[t+1] <- q* B[t]
+
+I_obs[t+1] ~ dlnorm(I[t+1] , tau_o)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+# Prior 
+#taux d'exploitation
+
+# taux de poisson capturé
+for(t in 1:n_obs){
+h[t] ~ dbeta(1,1)
+}
+
+#  ?????
+q ~ dunif(0,1)
+
+
+# ---------------------------------------------------------------
+# ---------------------------------------------------------------
+
+r ~ dunif(0.01,3)
+r_p ~ dunif(0.01,3)
+
+K ~ dunif(100,15000) 
+K_p ~ dunif(100,15000) 
+
+# Gamma Informative priors on (r,K)
+
+ #Er <- 0.45 ; CVr <- 0.3
+ #ar <- 1/(CVr*CVr) 
+ #br <- (1/(CVr*CVr))*(1/Er)
+ #r ~ dgamma(ar,br) 
+ #r_p ~ dgamma(ar,br) 
+
+ #EK <- 5000 ; CVK <- 0.6
+ #aK <- 1/(CVK*CVK) 
+ #bK <- (1/(CVK*CVK))*(1/EK)
+ #K ~ dgamma(aK,bK) 
+ #K_p ~ dgamma(aK,bK) 
+
+
+
+# ----------------------------------------------------------------
+
+# Maximum surplus production
+
+# Schaefer
+C_MSY <-  r*K/4
+C_MSY_p <-   r_p*K_p/4
+# Fox
+# C_MSY <-  r*K/(exp(1)*log(K))
+# C_MSY_p <-   r_p*K_p/(exp(1)*log(K_p))
+
+# Biomass at maximum surplus production
+
+# Schaefer
+B_MSY <- K/2
+B_MSY_p <- K_p/2
+# Fox
+# B_MSY <- K / exp(1)
+# B_MSY_p <- K_p / exp(1)
+
+# Fishing mortality at MSY
+# Schaefer : F_MSY = r/2
+# Fox : F_MSY <- r/log(K)
+h_MSY <- C_MSY / B_MSY
+h_MSY_p <- C_MSY_p / B_MSY_p
+
+# Depletion
+# for (t in 1:(n_obs-1)){  D[t] <- B[t]/B[1]  } 
+
+# Risk
+# Measured as the probability that the biomass level (last year)
+# is under a threshold defined a priori
+# threshold <- B_MSY
+# for (t in 1:(n_obs+n_proj)) {  risk[t] <- step(threshold-B[t])  }
+
+# Equilibrium curve
+# Depends on the parmaeters only 
+
+for (e in 1:n_equi)
+{
+# Schaefer
+C_e[e] <- r*B_e[e]*(1-B_e[e]/K)
+# Fox model
+# C_e[e] <- r*B_e[e]*(1-log(B_e[e])/log(K))
+}
+
+# end model
+}"

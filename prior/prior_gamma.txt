@@ -1,0 +1,29 @@
+#  Understanding the prior distribution of parameters
+#  Example of the Gamma distribution
+#  ----------------------------------------------------------------------------
+
+model
+{
+
+# gamma distribution
+# gamma(a,b)
+# E = a/b
+# v = a/b²
+# mode = (a-1)/b
+# CV = 1/racine(a)
+
+# a = 1/CV²
+# b = (1/cv²)*(1/E)
+
+# a = E²/V
+# b = E/V
+
+E <- 0.45
+CV <- 0.30
+	
+a <- 1/(CV*CV)
+b <- (1/(CV*CV))*(1/E)
+
+x ~ dgamma(a,b)I(,200)
+
+}
