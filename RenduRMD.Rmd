@@ -1,0 +1,30 @@
+---
+title: "Rendu RMD"
+output: html_document
+date: "2023-12-14"
+---
+
+```{r setup, include=FALSE}
+library()
+```
+
+#Introduction 
+
+=> intro écologique sur l'étude menée et la pêche 
+=> introduction des modèles hiérarchique 
+
+#Présentation des modèles testés 
+
+=> Schéma 
+=> intégration de deux de donnés 
+
+#Comparaison des modèles
+**Il y a t-il une équation de dynamique de biomass qui est plus adaptée qu'une autre ? **
+
+
+#Projection avec le modèle choisit 
+=> différent scénario de pêche , discussion avec la biblio ? 
+**à partie de quelle année la biomass va passer en dessous d'un certain seuil ?**
+
+
+#Conclusion 
