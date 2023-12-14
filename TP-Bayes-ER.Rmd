@@ -172,12 +172,12 @@ n.stored <- 1000
 n.thin <- 10
 n.iter <- n.stored*n.thin
 
-model.compiled <- jags.model(file = model_schaefer_nul , data=data, n.chain=n.chains, n.adapt=n.adapt)
+model.compiled <- jags.model(file =model_fox_h_r_k , data=data, n.chain=n.chains, n.adapt=n.adapt)
 
 
 
 ptm <- proc.time()
-?proc.time
+
   # Burnin period (not stored)
 
 print("burn-in")
@@ -202,7 +202,7 @@ print(time.to.run.mcmc)
 
 # Start from a compiled model that has already been updated
 
-n.iter.DIC <- 1000
+n.iter.DIC <- 10000
 dic.pD <- dic.samples(model.compiled, n.iter.DIC, "pD") 
 dic.pD		# Deviance Information Criterion
 
@@ -235,11 +235,10 @@ waic
 
 ```
 
-Pour le modèle de fox on observe DIC de 231 et un Waic de 228.8
+Pour le modèle de fox on observe DIC de 234.4 et un Waic de 222.9
 
-Pour le modèle de Schaefer on observe un DIC de 243.2 et un waic de 221.8
 
-Modèle nul donne valeur abérantes 
+
 
 
 ```{r}
@@ -275,6 +274,7 @@ var = "B"
 var.mcmc = mcmc[,which(substr(varnames(mcmc),1,nchar(var)+1)==paste(var,"[",sep=""))]
 effectiveSize(var.mcmc) 
 
+
 ```
 
 
@@ -304,6 +304,22 @@ for (i in seq_along(plot_results)) {
 #O
 
 ```
+
+
+Modèle de Fox 
+
+Pour g(Bt) on utilise le modèle de Schaeffer
+$$\frac{dBt}{dt}=r*Bt*(1-\frac{log_e(Bt)}{log_e(K)})-Ct  $$
+
+Résultats avec prior info
+
+Les chaines MCMC de tous nos paramètres converge.
+
+
+
+critère
+
+
 
 
 Contexte
