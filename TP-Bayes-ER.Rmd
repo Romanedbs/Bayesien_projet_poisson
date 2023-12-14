@@ -5,10 +5,6 @@ date: "2023-11-24"
 output: html_document
 ---
 
-
-
-
-
 # Modélisation bayésienne de  la biomasse de poisson
 
 Contexte biologique:On se concentre sur 2 espèces dans 2 zones de pèches 
