@@ -81,26 +81,18 @@ library(MASS)
 # ----------------------------------------
 
 # Load the model, written in a .txt file
-model_fox_h_r_k <- "model/modelJAGS_BiomProd_Fox_priorinfo_h_r_k.txt"
-
-model_schaefer_nul<- "model/modelJAGS_BiomProd_Schaefer_modele_nul.txt"
-
-model_schaefer_h <- "model/modelJAGS_BiomProd_Schaefer_priorinfo_h.txt"
-
-model_schaefer_h_r_k <- "model/modelJAGS_BiomProd_Schaefer_priorinfo_h_r_k.txt"
+model <- "C:/Users/monau/Desktop/M2-S1/BAYES/_TD_BiomProd/_TD_BiomProd/model/modelJAGS_BiomProd_PriorParam.txt"
+source(model)
+model <- textConnection(model_JAGS)
 
 
-# model2 <- "C:/Users/monau/Desktop/M2-S1/BAYES/_TD_BiomProd/_TD_BiomProd/Bayesien_projet_poisson/model"
-# source(model2)
-# model2 <- textConnection(model_JAGS)
-# 
-# model3 <- "C:/Users/monau/Desktop/M2-S1/BAYES/_TD_BiomProd/_TD_BiomProd/Bayesien_projet_poisson/model"
-# source(model3)
-# model3 <- textConnection(model_JAGS)
-# 
-# model4 <- "C:/Users/monau/Desktop/M2-S1/BAYES/_TD_BiomProd/_TD_BiomProd/Bayesien_projet_poisson/model"
-# source(model4)
-# model4<- textConnection(model_JAGS)
+model2 <- "C:/Users/monau/Desktop/M2-S1/BAYES/_TD_BiomProd/_TD_BiomProd/model/modelJAGS_BiomProd_Schaeffer_modele_nul.txt"
+source(model2)
+model2 <- textConnection(model_JAGS)
+
+model3 <- "C:/Users/monau/Desktop/M2-S1/BAYES/_TD_BiomProd/_TD_BiomProd/model/modelJAGS_BiomProd_Schaeffer_priorinfo_h_r_k.txt"
+source(model3)
+model3 <- textConnection(model_JAGS)
 
 ```
 
@@ -112,7 +104,7 @@ model_schaefer_h_r_k <- "model/modelJAGS_BiomProd_Schaefer_priorinfo_h_r_k.txt"
 
 # load data
 
-data <- read.table(file = "data/data_BiomProd.txt", header = TRUE, sep = "") 
+data <- read.table(file = "C:/Users/monau/Desktop/M2-S1/BAYES/_TD_BiomProd/_TD_BiomProd/data/data_BiomProd.txt", header = TRUE, sep = "") 
 
 n_obs <- length(data$Year)
 n_proj <- 5
@@ -172,7 +164,9 @@ n.stored <- 1000
 n.thin <- 10
 n.iter <- n.stored*n.thin
 
+
 model.compiled <- jags.model(file =model_fox_h_r_k , data=data, n.chain=n.chains, n.adapt=n.adapt)
+
 
 
 
@@ -223,8 +217,8 @@ dic.pD		# Deviance Information Criterion
 mcmc.waic <- jags.samples(model = model.compiled, 
                           c("WAIC","deviance"), 
                           type = "mean", 
-                          n.iter = 100000,
-                          n.burnin = 10000,
+                          n.iter = 10000,
+                          n.burnin = 1000,
                           n.thin = 10)
 mcmc.waic$p_waic <- mcmc.waic$WAIC
 mcmc.waic$waic <- mcmc.waic$deviance + mcmc.waic$p_waic
@@ -235,8 +229,8 @@ waic
 
 ```
 
-Pour le modèle de fox on observe DIC de 234.4 et un Waic de 222.9
 
+Pour le modèle de fox on observe DIC de 234.4 et un Waic de 222.9
 
 
 
@@ -285,7 +279,7 @@ effectiveSize(var.mcmc)
 
 
 ```{r}
-#setwd("C:/Users/monau/Desktop/M2-S1/BAYES/_TD_BiomProd/_TD_BiomProd")
+setwd("C:/Users/monau/Desktop/M2-S1/BAYES/_TD_BiomProd/_TD_BiomProd")
 # --------------------------------------------
 # plot results
 # --------------------------------------------
@@ -327,13 +321,11 @@ Contexte
   COntexte double éco 
 
 Méthodologie
-  -
 
 Présentation modèle
   -modèle nul
   #-modele de schaefer prior non info
-  -modele de schaeffer prior info
-  
+  -modele de schaefer prior info
   #-modèle de fox prior non info 
   -modèle de fox prior info
 
