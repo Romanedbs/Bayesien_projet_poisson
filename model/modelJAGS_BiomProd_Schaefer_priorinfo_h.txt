@@ -25,7 +25,7 @@ B[t+1] ~ dlnorm(log(Bm[t+1]),tau_p)
 
 
 #Calcul de la pression lié à la peche
-for(t in 1:(n_obs-1)){
+for(t in 1:(n_obs)){
 
 C[t] <- h[t]*B[t]
 }
@@ -37,7 +37,7 @@ C[t] <- h[t]*B[t]
 	tau_o <- 1/(sigma2_o)
 
 #On utilise les captures pour informer notre  modèle
-for(i in 1:(n_obs-1)){
+for(i in 1:(n_obs)){
 
 C_obs[i] ~ dlnorm(log(C[i]),tau_o)
 

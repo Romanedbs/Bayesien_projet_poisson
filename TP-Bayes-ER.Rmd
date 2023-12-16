@@ -74,8 +74,6 @@ library(MASS)
 
 
 
-
-
 ```{r}
 # Load the model
 # ----------------------------------------
@@ -141,13 +139,7 @@ monitor <- c( "B",
               "h_MSY", 
               "C_e"#"Over_C","I_pred","D","Over_h","risk","sigma2p","C_pred"
 )
-```
 
-
-
-
-
-```{r}
 # MCMC options
 # ----------------------------------------------------------------------
 
@@ -163,9 +155,64 @@ n.burnin <- 1000
 n.stored <- 1000
 n.thin <- 10
 n.iter <- n.stored*n.thin
+```
 
 
-model.compiled <- jags.model(file =model_fox_h_r_k , data=data, n.chain=n.chains, n.adapt=n.adapt)
+```{r}
+# Load the model
+# ----------------------------------------
+
+# Load the model, written in a .txt file
+model_fox_h_r_k <- "model/modelJAGS_BiomProd_Fox_priorinfo_h_r_k.txt"
+
+model_schaefer_nul<- "model/modelJAGS_BiomProd_Schaefer_modele_nul.txt"
+
+model_schaefer_h <- "model/modelJAGS_BiomProd_Schaefer_priorinfo_h.txt"
+
+model_schaefer_h_r_k <- "model/modelJAGS_BiomProd_Schaefer_priorinfo_h_r_k.txt"
+
+model_test <- c(model_fox_h_r_k,model_schaefer_nul,model_schaefer_h,model_schaefer_h_r_k)
+```
+
+
+
+# Calculs des critères d'informations
+
+```{r}
+n.iter.DIC <- 100000
+tab_IC<-matrix(0,nrow= length(model_test),ncol = 4)#model/DIC/waic/paic
+tab_IC[,1]<-model_test
+for (i in 1:length(model_test)){
+
+model.compiled <- jags.model(file =model_test[i] , data=data, n.chain=n.chains, n.adapt=n.adapt)
+update(model.compiled, n.iter=n.burnin)
+
+# Calcul DIC
+
+dic.pD <- dic.samples(model.compiled, n.iter.DIC, "pD") 
+
+tab_IC[i,2] <-sum(dic.pD$deviance)+sum(dic.pD$penalty)
+mcmc.waic <- jags.samples(model = model.compiled, 
+                          c("WAIC","deviance"), 
+                          type = "mean", 
+                          n.iter = 100000,
+                          n.burnin = 10000,
+                          n.thin = 10)
+mcmc.waic$p_waic <- mcmc.waic$WAIC
+
+mcmc.waic$waic <- mcmc.waic$deviance + mcmc.waic$p_waic
+tmp <- sapply(mcmc.waic, sum)
+waic <- round(c(waic = tmp[["waic"]], p_waic = tmp[["p_waic"]]),1)
+tab_IC[i,3:4]<-waic
+
+}
+tab_IC
+```
+
+```{r}
+
+model.compiled <- jags.model(file =model_schaefer_h_r_k, data=data, n.chain=n.chains, n.adapt=n.adapt)
+
 
 
 
@@ -361,7 +408,7 @@ vobs permet de modifier à quel point on valide nos données
 
 resultat eloigne aux  données
  du à l'hypothèse sur h 
-
+  
 On a de l'overfitting
 on va chercher à évaluer la variabilité de nos predictions
 
