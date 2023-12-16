@@ -183,11 +183,12 @@ waic <- round(c(waic = tmp[["waic"]], p_waic = tmp[["p_waic"]]),1)
 tab_IC[i,3:4]<-waic
 
 }
+tab_IC
 ```
 
 ```{r}
 
-model.compiled <- jags.model(file =model_fox_h_r_k , data=data, n.chain=n.chains, n.adapt=n.adapt)
+model.compiled <- jags.model(file =model_schaefer_h_r_k, data=data, n.chain=n.chains, n.adapt=n.adapt)
 
 
 
@@ -384,7 +385,7 @@ vobs permet de modifier à quel point on valide nos données
 
 resultat eloigne aux  données
  du à l'hypothèse sur h 
-
+  
 On a de l'overfitting
 on va chercher à évaluer la variabilité de nos predictions
 
