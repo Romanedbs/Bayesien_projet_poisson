@@ -7,20 +7,54 @@ date: "2023-12-14"
 ```{r setup, include=FALSE}
 library()
 ```
+# Modèles à espaces d'états intégrés : La pêcherie 
 
 #Introduction 
 
 => intro écologique sur l'étude menée et la pêche 
-=> introduction des modèles hiérarchique 
+Les problématiques de surpèche et perte de biodiversité dans nos océans sont loins d'être un problème récent. *petite phrase sur la diminution de la biomasse de poisson* .De nombreuses études ont été menées (ref) afin de modéliser et prédire au mieux la biomasse des différentes espèces concernées. *blabla*
 
+=> introduction des modèles hiérarchiques 
+Un des méthodes qui donnent des résultats intéressant est l'utilisation de modèle à espaces d'états intégrés développé durant ce TP. C'est à dire des modèles qui qui rentre dans l'idée de modélisation hiérarchique avec une composante dynamique dans la couche latente de la structure hiérarchique. Et modèle "intégrés" car on combine plusieurs jeux de donnés de sources différentes, cela permet de diversifier les informations et d'estimer au mieux les paramètres par rapport à la réalité.
+
+Ce rapport s'appuie sur *blabla*
+
+Dans un premier temps nous ferons la comparaison d'un premier modèle hiérarchique avec comme modèle de production de biomasse le modèle de Shaefer et un deuxième avec le modèle de Fox. Après analyse des résultats de comparaison, nous ferrons dans un second temps une analyse de prédiction grâce au modèle choisi, pour prédire l'évolution de la biomasse du stocke de merlu en fonction de différents scénarios de pêches. L'étape de modélisation utltérieur à la prédiction nous permet de prendre en compte et de distinguer l'aléa du processus et l'aléa de l'observation dans la prédiction de la biomasse.
+
+=> caller je sais pas où def MSY : 
 #Présentation des modèles testés 
+=> Schéma du modèle hiérarchique global 
 
-=> Schéma 
+=> Paramètre inconnu
+
+
+=> Modèle de processus 
+
+Les modèles de processus ici utilisés sont des modèles de production de biomasse qui vont nous servir à étudier l'évolution de la biomasse et le rendement équilibré maximal (MSY). Nous avons choisis de comparer deux modèles. Les deux se compose d'une fonction de production $g(B)$ au quel on soustrait les prises aux temps $t$ $C_t$ :
+$$B_{t+1} =  g(B_t)-C_t$$
+On ne représente ni la strucuture d'âge , de taille ou de sexe.
+
+Les modèles testés différent dans la manière de définir la fonction de production $g(B_t)$. 
+
+- Le modèle de Shaefer :
+$$\dfrac{dB_t}{dt}= r*B_t*(1 - \dfrac{B_t}{K}) $$
+- Le modèle de Fox :
+
+Avex $r$ la croissance de la population et $K$ la capacité maximale de population. Si on arrive à avoir $r$ et $K$ on peut avoir accès à des point de références sur la gestion telle que le MSY qui correspond à la prise maximale ne comprommettant pas la survie à long terme de la population (C.Bordet,2013).
+ $f(r,K)$. 
+
+Ces deux modèles sont en faite deux cas particulier du modèle de Pella et Tomlinson (Pella and Tomlinson, 1969) : (formule)
+
+avec $m$ un paramètre d'asymétrie.
+
+*Rajouter quelques mots sur ces modèles ?*
+
 => intégration de deux de donnés 
 
 #Comparaison des modèles
 **Il y a t-il une équation de dynamique de biomass qui est plus adaptée qu'une autre ? **
 
+# Analyse des résultas
 
 #Projection avec le modèle choisit 
 => différent scénario de pêche , discussion avec la biblio ? 
@@ -28,3 +62,7 @@ library()
 
 
 #Conclusion 
+
+# Références : 
+. Charles Bordet. Modèles de croissance de populations de poissons. Méthodologie [stat.ME]. 2013.
+ffdumas-00858949f
