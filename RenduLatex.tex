@@ -1,0 +1,301 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%%       Vos modif sont à faire plus loin seulement !!                %%
+%%                (voir à la ligne 68)                                %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\documentclass[a4paper,11pt,twoside,openany]{report}
+\usepackage{fullpage}
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[labelfont=bf,textfont=sl,tableposition=top,small]{caption}
+\usepackage{fancyhdr}
+\usepackage{calc}
+\usepackage[square]{natbib}
+
+%%Pour avoir des pages réellement vides entre les chapitres
+% \makeatletter
+% \def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+% \hbox{}
+% \vspace*{\fill}
+% \vspace{\fill}
+% \thispagestyle{empty}
+% \newpage
+% \if@twocolumn\hbox{}\newpage\fi\fi\fi}
+% \makeatother
+
+%% En-tête et pieds de page avec fancyhdr
+\setlength{\headsep}{13.6pt}
+\headheight=14.85pt
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\fancyhf{}
+\fancyhead[RO]{\bfseries\rightmark}
+\fancyhead[LE]{\bfseries\leftmark}
+\fancyfoot[LE,RO]{\bfseries\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\addtolength{\headheight}{0.5pt}
+ \renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhead{}\renewcommand{\headrulewidth}{0pt}}
+
+%% Mise en page des théorèmes, lemme etc...
+\theoremstyle{plain}
+\newtheorem{thm}{Théorème}[section]
+\newtheorem{lemme}[thm]{Lemme}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem*{cor}{Corollaire}
+\theoremstyle{definition}
+\newtheorem{defn}{Définition}[section]
+\newtheorem{conj}{Conjecture}[section]
+\newtheorem{exmp}{Exemple}[section]
+\theoremstyle{remark}
+\newtheorem*{rem}{Remarque}
+\newtheorem*{note}{Note}
+\newtheorem{case}{Cas particulier}
+
+\renewcommand{\floatpagefraction}{0.95}
+\renewcommand{\textfraction}{0.05}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+%% Chemin du repertoire contenant toutes les Figures
+\graphicspath{{./Figures/}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%%       Faire vos modifications à partir d'ici !!!!                  %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% La ligne suivante est a commenter pour enlever le Lorem Ipsum !!!!
+%% Attention il faudra aussi supprimer toutes les commandes
+%% \Blindtext, \blindtext, \blindmathpaper
+%%\usepackage{blindtext}
+
+\title{Le Titre de mon super }
+\author{Monaury Clément \& Dubois Romane}
+\date{22 décembre 2023}
+
+\begin{document}
+
+\pagestyle{empty}
+\begin{titlepage}
+  \begin{center}
+    \vspace*{-2cm}
+    % \includegraphics[width=0.25\textwidth]{logoUM2}\\[1cm]
+
+    \textsc{\LARGE Université Rennes}\\[1.5cm]
+
+    \HRule\\[0.4cm]
+
+    {\huge \textbf{Modèles à espaces d'états intégrés : La pêcherie de merlu en Namibie}}\\[0.4cm]
+    
+    \HRule\\[1.5cm]
+
+    Compte rendu de TP -  UE EPB
+    Master 2 MODE
+    % \includegraphics[width=\textwidth]{figurePage2garde}
+    \vfill
+    \begin{minipage}{0.4\textwidth}
+      \begin{flushleft}
+        \large
+        Clément \textsc{Monaury}\\
+        Romane \textsc{Dubois}
+      \end{flushleft}
+    \end{minipage}
+    \begin{minipage}{0.4\textwidth}
+      \begin{flushright}
+        \large
+        22 décembre 2023\\
+      \end{flushright}
+    \end{minipage}
+
+    \vfill
+  
+  \end{center}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+
+\pagestyle{fancy}
+%\setcounter{page}{0}
+\pagenumbering{arabic}
+
+\section*{Introduction}
+  Les problématiques de surpèche et perte de biodiversité dans nos océans sont loins d'être un problème récent. 
+*petite phrase sur la diminution de la biomasse de poisson* .
+De nombreuses études ont été menées (ref) afin de modéliser et prédire au mieux la biomasse des différentes 
+espèces concernées. *blabla*
+
+Une des méthodes qui donnent des résultats intéressant est l'utilisation de modèle à espaces d'états 
+intégrés développé durant ce TP. C'est à dire des modèles qui qui rentre dans l'idée de modélisation 
+hiérarchique avec une composante dynamique dans la couche latente de la structure hiérarchique. 
+Et modèle "intégrés" car on combine plusieurs jeux de donnés de sources différentes, 
+cela permet de diversifier les informations et d'estimer au mieux les paramètres par rapport à la réalité.
+
+Ce rapport s'appuie sur *blabla*
+
+Dans un premier temps nous ferons la comparaison d'un premier modèle hiérarchique avec comme modèle 
+de production de biomasse le modèle de Shaefer et un deuxième avec le modèle de Fox. Après analyse des 
+résultats de comparaison, nous ferrons dans un second temps une analyse de prédiction grâce au modèle 
+choisi, pour prédire l'évolution de la biomasse du stocke de merlu en fonction de différents scénarios 
+de pêches. L'étape de modélisation utltérieur à la prédiction nous permet de prendre en compte et de 
+distinguer l'aléa du processus et l'aléa de l'observation dans la prédiction de la biomasse.
+
+
+\section*{Présentation des modèles testés}
+
+=> Schéma du modèle hiérarchique global 
+
+=> Paramètre inconnu
+
+
+=> Modèle de processus 
+
+Les modèles de processus ici utilisés sont des modèles de production de biomasse qui vont 
+nous servir à étudier l'évolution de la biomasse et le rendement équilibré maximal (MSY). 
+Nous avons choisis de comparer deux modèles. Les deux se compose d'une fonction de production $g(B)$ 
+au quel on soustrait les prises aux temps $t$ $C_t$:
+$$B_{t+1} =  g(B_t)-C_t$$
+On ne représente ni la strucuture d'âge, de taille ou de sexe.
+
+Les modèles testés diffèrent dans la manière de définir la fonction de production $g(B_t)$. 
+
+- Le modèle de Shaefer :
+$$\dfrac{dB_t}{dt}= r*B_t*(1 - \dfrac{B_t}{K}) $$
+- Le modèle de Fox :
+
+Avex $r$ la croissance de la population et $K$ la capacité maximale de population. Si on arrive à avoir $r$ 
+et $K$ on peut avoir accès à des point de références sur la gestion telle que le MSY qui correspond à la 
+prise maximale ne comprommettant pas la survie à long terme de la population (C.Bordet,2013).
+
+On calcul le $C_{MSY}$ de deux manières différentes en fonction des modèles testés. 
+- Le modèle de Shaefer :
+$$C_{MSY}=\dfrac{R*K}{4} $$
+- Le modèle de Fox : 
+
+Ces deux modèles sont en faite deux cas particulier du modèle de Pella et Tomlinson (Pella and Tomlinson, 1969):
+(formule)
+
+avec $m$ un paramètre d'asymétrie.
+
+*Rajouter quelques mots sur ces modèles ?*
+
+=> intégration de deux de donnés 
+%% Voici comment insérer une figure !!! Utiliser de préférence le
+%% format eps !!!!
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=\textwidth]{studyRegionApp}
+%   \caption[Titre plus synthétique aller voir comme il diffère du titre
+%   original.]{Left: Topographical map of Switzerland showing the sites
+%     and altitudes in metres above sea level of 16 weather stations for
+%     which annual maxima temperature data are available. Middle: Times
+%     series of the daily maxima temperatures at the 16 weather stations
+%     for year 2003. The '$\rm o$', '$+$' and '$\rm x$' symbols indicate
+%     the annual maxima that occurred the 11th, 12th and 13th of August
+%     respectively. Right: Comparison between the fitted extremal
+%     coefficient function from a Schlather process (solid red line) and
+%     the pairwise extremal coefficient estimates (gray circles). The
+%     black circles denote binned estimates with 16 bins.}
+%   \label{fig:studyRegion}
+% \end{figure}
+
+
+
+% \chapter{Un chapitre}
+% \label{cha:un-chapitre}
+
+% \section{Une autre section}
+% \label{sec:une-autre-section}
+
+
+% %% Voici comment insérer un tableau !!! Attention pas de ligne verticale
+% %% !!!
+% \begin{table}
+%   \centering
+%   \caption[Spatial dependence structures of Schlather processes based
+%   on an isotropic powered exponential correlation function]{Spatial
+%     dependence structures of Schlather processes based on an isotropic
+%     powered exponential correlation function with scale parameter
+%     $\lambda$ and shape parameter $\kappa$. The correlation function
+%     parameters are set to ensure that $\theta(100) = 1.5$.}
+%   \label{tab:spatDepConf}
+%   \begin{tabular}{lccc}
+%     \hline
+%     & \multicolumn{3}{c}{Sample path properties}\\
+%     & $\theta_1\colon \text{Wiggly}$ & $\theta_2\colon \text{Smooth}$
+%     & $\theta_3\colon \text{Very smooth}$\\
+%     \hline
+%     $\lambda$ & 208 & 144 & 128\\
+%     $\kappa$ & 0.5 & 1 & 1.5\\
+%     \hline
+%   \end{tabular}
+% \end{table}
+
+
+% \subsection{Une sous-section}
+% \label{sec:une-sous-section}
+
+
+
+% \subsection{Une autre sous-section}
+% \label{sec:une-autre-sous-1}
+
+
+
+% \begin{figure}
+%    \centering
+%    \includegraphics[width=\textwidth]{condSimApp3}
+%    \caption[Maps on a $64 \times 64$ grid of the pointwise $0.025,
+%    0.5$ and $0.975$ sample quantiles for temperature $(^\circ{\rm C})$
+%    obtained from 10000 conditional simulations of the fitted Schlather
+%    process.]{From left to right: Maps on a $64 \times 64$ grid of the
+%      pointwise $0.025, 0.5$ and $0.975$ sample quantiles for
+%      temperature $(^\circ{\rm C})$ obtained from 10000 conditional
+%      simulations of the fitted Schlather process. The squares show the
+%      conditional locations and the conditional values. The right panel
+%      shows the temperatures anomalies, i.e., the difference between
+%      the pointwise conditional medians and the pointwise unconditional
+%      medians estimated from the fitted trend.}
+%   \label{fig:condSimApp}
+% \end{figure}
+
+
+
+% \section{Encore une section}
+% \label{sec:encore-une-section}
+
+
+
+% \chapter{Un autre chapitre}
+% \label{cha:un-autre-chapitre}
+
+
+% \chapter*{Conclusion}
+
+
+
+
+% \nocite{R,Dav,Agr,nat,Li:1985,BrCl,CM,LesSpi,LitRub,MCN}
+% \bibliographystyle{apalike}  
+% \bibliography{references}
+
+% \appendix
+
+% \chapter{Une appendice}
+% \label{cha:une-appendice}
+
+
+
+% \chapter{Une deuxième appendice}
+% \label{cha:une-deux-append}
+
+
+
+\end{document}
